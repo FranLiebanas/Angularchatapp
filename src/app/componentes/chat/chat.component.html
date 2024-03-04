@@ -1,0 +1,56 @@
+<!-- app.component.html -->
+
+<div class="container">
+  <!-- Lista de usuarios -->
+  <div class="user-list">
+    <div
+      class="user"
+      *ngFor="let user of listaUsuarios"
+      (click)="selectUser(user)"
+    >
+      <div class="user-info">
+        <h4>{{ user.nombre }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-area">
+    <div class="chat-header">
+      <h2>{{ receptor?.nombre }}</h2>
+    </div>
+    <div #mensajes class="messages">
+      <ng-container *ngIf="conversacion.length">
+        <div
+          class="message"
+          *ngFor="let mensaje of conversacion"
+          [ngClass]="{
+            'right-align': mensaje.remitenteId === usuario.id,
+            'left-align': mensaje.remitenteId !== usuario.id
+          }"
+        >
+          <div
+            class="message-content"
+            [ngStyle]="{
+              'background-color':
+                mensaje.remitenteId === usuario.id ? 'greenyellow' : 'gainsboro'
+            }"
+          >
+            <p>{{ mensaje.texto }}</p>
+          </div>
+          <div class="message-time">
+            <p>{{ mensaje.fechaHoraFormateada }}</p>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="message-input">
+      <input
+        type="text"
+        placeholder="Escribe tu mensaje..."
+        [(ngModel)]="mensajeTexto"
+        [disabled]="!receptor"
+      />
+      <button (click)="sendMessage()" [disabled]="!receptor">Enviar</button>
+    </div>
+  </div>
+</div>
